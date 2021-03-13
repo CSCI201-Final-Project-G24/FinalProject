@@ -1,2 +1,2 @@
 # FinalProject
-This is the final project for CSCI201 Group 24
+This is backend part for the final project for CSCI201 Group 24
