@@ -1,0 +1,12 @@
+# applicaltion.yaml
+spring:
+  application:
+    name: appA
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?useSSL=true&characterEncoding=utf-8&useUnicode=true
+    username: root
+    password: root
+
+server:
+  port: 8081
