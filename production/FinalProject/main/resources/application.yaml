@@ -4,9 +4,9 @@ spring:
     name: appA
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/G24?useSSL=true&characterEncoding=utf-8&useUnicode=true
+    url: jdbc:mysql://localhost:3306/test?useSSL=true&characterEncoding=utf-8&useUnicode=true
     username: root
-    password: fffcj9032
+    password: root
 
 server:
   port: 8081
