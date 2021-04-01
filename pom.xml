@@ -15,7 +15,7 @@
     <description>This is the final project for USC CSCI201</description>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>14</java.version>
     </properties>
     <dependencies>
         <dependency>

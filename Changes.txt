@@ -1,0 +1,2 @@
+弄了user的很多东西
+准备弄server里面的startBattleRoom method

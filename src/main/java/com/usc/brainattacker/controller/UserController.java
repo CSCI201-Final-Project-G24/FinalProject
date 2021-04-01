@@ -1,6 +1,7 @@
 package com.usc.brainattacker.controller;
 
 
+import com.usc.brainattacker.entity.Statistic;
 import com.usc.brainattacker.entity.User;
 import com.usc.brainattacker.service.UserService;
 import com.usc.brainattacker.util.MessageConstant;
@@ -29,4 +30,27 @@ public class UserController {
 			return new Result(false, MessageConstant.ADD_USER_FAIL);
 		}
 	}
+
+	@PostMapping("/authenticate")
+	public Result authenticate(@RequestBody String username, @RequestBody String password) {
+		try {
+			boolean authenticated = userService.authenticate(username, password);
+			return new Result(authenticated, MessageConstant.QUERY_USER_SUCCESS);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false, MessageConstant.QUERY_USER_FAIL);
+		}
+	}
+
+	@PostMapping("/statistics")
+	public Result statistics(@RequestBody User user) {
+		try {
+			Statistic statistic = userService.statistics(user);
+			return new Result(true, MessageConstant.QUERY_USER_SUCCESS, statistic);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false, MessageConstant.QUERY_USER_FAIL);
+		}
+	}
+
 }

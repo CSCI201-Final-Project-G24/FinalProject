@@ -1,6 +1,7 @@
 package com.usc.brainattacker.entity;
 
 public class User {
+	private int uid;
 	private String username;
 	private String password;
 
@@ -10,6 +11,10 @@ public class User {
 	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
+	}
+
+	public int getUserID() {
+		return uid;
 	}
 
 	public String getUsername() {
