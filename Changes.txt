@@ -1,2 +1,5 @@
 弄了user的很多东西
 准备弄server里面的startBattleRoom method
+
+问题：我把所有的battleRoom放到了一个static arrayList里面，有必要么，用过的battleRoom可以再利用么
+怎么把server做成一个一直运行的东西

@@ -20,10 +20,10 @@ public interface UserMapper {
 	@Select("select uid from user where username = #{username}")
     int getUserID(String username);
 	
-	@Select("select win_number from user where username = #{username}")
+	@Select("select win_number from userprofile where username = #{username}")
     int getUserWinNumber(String username);
 
-	@Select("select game_number from user where username = #{username}")
+	@Select("select game_number from userorofile where username = #{username}")
     int getUserGameNumber(String username);
 
 }

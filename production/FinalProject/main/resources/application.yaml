@@ -9,4 +9,4 @@ spring:
     password: root
 
 server:
-  port: 3306
+  port: 8808

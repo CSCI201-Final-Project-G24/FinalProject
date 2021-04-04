@@ -1,5 +1,7 @@
 package com.usc.brainattacker.service.impl;
 
+import com.usc.brainattacker.entity.BattleRoom;
+import com.usc.brainattacker.entity.Server;
 import com.usc.brainattacker.entity.Statistic;
 import com.usc.brainattacker.entity.User;
 import com.usc.brainattacker.mapper.UserMapper;
@@ -32,4 +34,11 @@ public class UserServiceImpl implements UserService {
 		Statistic retu = new Statistic(winNumber, gamenumber);
 		return retu;
 	}
+
+	@Override
+	public BattleRoom goBattle(User user){
+		BattleRoom br = Server.server.getLatestBattleRoom(user);
+		return br;
+	}
+
 }

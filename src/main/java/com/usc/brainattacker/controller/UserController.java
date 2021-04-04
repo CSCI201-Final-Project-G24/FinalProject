@@ -1,6 +1,7 @@
 package com.usc.brainattacker.controller;
 
 
+import com.usc.brainattacker.entity.BattleRoom;
 import com.usc.brainattacker.entity.Statistic;
 import com.usc.brainattacker.entity.User;
 import com.usc.brainattacker.service.UserService;
@@ -47,6 +48,17 @@ public class UserController {
 		try {
 			Statistic statistic = userService.statistics(user);
 			return new Result(true, MessageConstant.QUERY_USER_SUCCESS, statistic);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false, MessageConstant.QUERY_USER_FAIL);
+		}
+	}
+
+	@PostMapping("/goBattle")
+	public Result goBattle(@RequestBody User user) {
+		try {
+			BattleRoom br = userService.goBattle(user);
+			return new Result(true, MessageConstant.QUERY_USER_SUCCESS, br);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new Result(false, MessageConstant.QUERY_USER_FAIL);
