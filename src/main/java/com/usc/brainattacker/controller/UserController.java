@@ -24,8 +24,9 @@ public class UserController {
 	@PostMapping("/add")
 	public Result add(@RequestBody User user) {
 		try {
-			userService.add(user);
-			return new Result(true, MessageConstant.ADD_USER_SUCCESS);
+			boolean valid = userService.add(user);
+			if(valid)return new Result(true, MessageConstant.ADD_USER_SUCCESS);
+			else return new Result(false, MessageConstant.ADD_USER_FAIL);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new Result(false, MessageConstant.ADD_USER_FAIL);
@@ -33,10 +34,15 @@ public class UserController {
 	}
 
 	@PostMapping("/authenticate")
-	public Result authenticate(@RequestBody String username, @RequestBody String password) {
+	public Result authenticate(@RequestBody User user) {
 		try {
-			boolean authenticated = userService.authenticate(username, password);
-			return new Result(authenticated, MessageConstant.QUERY_USER_SUCCESS);
+			boolean authenticated = userService.authenticate(user.getUsername(), user.getPassword());
+			if(authenticated){
+				return new Result(true, MessageConstant.QUERY_USER_SUCCESS);
+			}else{
+				return new Result(false, "Invalid Login");
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new Result(false, MessageConstant.QUERY_USER_FAIL);
@@ -47,7 +53,20 @@ public class UserController {
 	public Result statistics(@RequestBody User user) {
 		try {
 			Statistic statistic = userService.statistics(user);
+			if(statistic == null) return new Result(false, "user does not exist");
 			return new Result(true, MessageConstant.QUERY_USER_SUCCESS, statistic);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false, MessageConstant.QUERY_USER_FAIL);
+		}
+	}
+
+	@PostMapping("/findBattle")
+	public Result findBattle(@RequestBody User user, @RequestParam int roomNumber) {
+		try {
+			BattleRoom br = userService.findBattle(user, roomNumber);
+			if(br == null) return new Result(false, "This room is already full");
+			return new Result(true, MessageConstant.QUERY_USER_SUCCESS, br);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new Result(false, MessageConstant.QUERY_USER_FAIL);

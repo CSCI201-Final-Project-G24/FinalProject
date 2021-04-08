@@ -1,29 +1,53 @@
 package com.usc.brainattacker.entity;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Server {
-    private static List<BattleRoom> battleRoomList = Collections.synchronizedList(new ArrayList<BattleRoom>());
+    private static int battleRoomNumber = 0;
+    private static Map<Integer, BattleRoom> battleRoomList = Collections.synchronizedMap(new HashMap<Integer, BattleRoom>());
     public static Server server = new Server();
 
     public Server(){
     }
 
-    public BattleRoom startBattleRoom(User user){
-        BattleRoom br = new BattleRoom(user);
-        battleRoomList.add(br);
+    private BattleRoom startBattleRoom(User user){
+        while(battleRoomList.containsKey(battleRoomNumber)){
+            battleRoomNumber++;
+        }
+        BattleRoom br = new BattleRoom(user, battleRoomNumber);
+        battleRoomList.putIfAbsent(battleRoomNumber++, br);
         return br;
     }
 
-    public BattleRoom getLatestBattleRoom(User user){
-        if(!battleRoomList.isEmpty()){
-            BattleRoom br = battleRoomList.get(battleRoomList.size()-1);
-            if(br.stillValid()){
-                br.addUser(user);
-                return br;
+    // will test that this room number does not exist
+    private BattleRoom startSpecificBattleRoom(User user, int roomNumber){
+        BattleRoom br = new BattleRoom(user, roomNumber);
+        battleRoomList.putIfAbsent(roomNumber, br);
+        return br;
+    }
+
+    // if want to go to specific room number, call this function
+    public BattleRoom findBattleRoom(User user, int roomNumber){
+        if(!battleRoomList.isEmpty()) {
+            if(battleRoomList.containsKey(roomNumber)){
+                BattleRoom br = battleRoomList.get(roomNumber);
+                if(br.stillValid()){
+                    br.addUser(user);
+                    return br;
+                }else return null;
+
             }
+        }return startSpecificBattleRoom(user, roomNumber);
+    }
+
+    // if just want to battle call this
+    public BattleRoom getABattleRoom(User user){
+        if(!battleRoomList.isEmpty()){
+            for (BattleRoom br : battleRoomList.values())
+                if(br.stillValid()){
+                    br.addUser(user);
+                    return br;
+                }
         }
         
         return startBattleRoom(user);

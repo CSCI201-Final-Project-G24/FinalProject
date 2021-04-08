@@ -16,28 +16,44 @@ public class UserServiceImpl implements UserService {
 	private UserMapper userMapper;
 
 	@Override
-	public void add(User user) {
-		userMapper.add(user);
+	public boolean add(User user) {
+		int occupied = userMapper.ifOccupied(user.getUsername());
+		if(occupied == 0){
+			userMapper.add(user);
+			int uid = userMapper.getUserID(user.getUsername());
+			userMapper.addProfile();
+			return true;
+		}else return false;
+
 	}
 
 	@Override
 	public boolean authenticate(String username, String password) {
+		int occupied = userMapper.ifOccupied(username);
+		if(occupied == 0) return false;
 		String validPassword = userMapper.getUserPassword(username);
-		return password == validPassword;
+		return password.equals(validPassword);
 	}
 
 	@Override
 	public Statistic statistics(User user){
-		
-		int winNumber = userMapper.getUserWinNumber(user.getUsername());
-		int gamenumber = userMapper.getUserGameNumber(user.getUsername());
-		Statistic retu = new Statistic(winNumber, gamenumber);
-		return retu;
+		int occupied = userMapper.ifOccupied(user.getUsername());
+		if(occupied == 0) return null;
+		int uid = userMapper.getUserID(user.getUsername());
+		int winNumber = userMapper.getUserWinNumber(uid);
+		int gameNumber = userMapper.getUserGameNumber(uid);
+		return new Statistic(winNumber, gameNumber);
+	}
+
+	@Override
+	public BattleRoom findBattle(User user, int roomNumber){
+		BattleRoom br = Server.server.findBattleRoom(user, roomNumber);
+		return br;
 	}
 
 	@Override
 	public BattleRoom goBattle(User user){
-		BattleRoom br = Server.server.getLatestBattleRoom(user);
+		BattleRoom br = Server.server.getABattleRoom(user);
 		return br;
 	}
 

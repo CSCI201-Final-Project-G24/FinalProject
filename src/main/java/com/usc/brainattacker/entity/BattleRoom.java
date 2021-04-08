@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class BattleRoom {
     
+    private int roomNumber;
     private boolean valid;
     private static int roomSize = 2;
     private ArrayList<User> userList = new ArrayList<User>();
@@ -12,8 +13,13 @@ public class BattleRoom {
         return valid;
     }
 
-    public BattleRoom(User user){
+    public int getRoomNumber() {
+        return roomNumber;
+    }
+
+    public BattleRoom(User user, int roomNumber){
         userList.add(user);
+        this.roomNumber = roomNumber;
         valid = userList.size() < roomSize;
     }
 
