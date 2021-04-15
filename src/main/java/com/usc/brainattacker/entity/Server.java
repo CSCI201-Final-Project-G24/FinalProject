@@ -10,47 +10,57 @@ public class Server {
     public Server(){
     }
 
-    private BattleRoom startBattleRoom(User user){
+    public BattleRoom startBattleRoom(String username){
         while(battleRoomList.containsKey(battleRoomNumber)){
             battleRoomNumber++;
         }
-        BattleRoom br = new BattleRoom(user, battleRoomNumber);
+        BattleRoom br = new BattleRoom(username, battleRoomNumber);
         battleRoomList.putIfAbsent(battleRoomNumber++, br);
         return br;
     }
 
     // will test that this room number does not exist
-    private BattleRoom startSpecificBattleRoom(User user, int roomNumber){
-        BattleRoom br = new BattleRoom(user, roomNumber);
+    private BattleRoom startSpecificBattleRoom(String username, int roomNumber){
+        BattleRoom br = new BattleRoom(username, roomNumber);
         battleRoomList.putIfAbsent(roomNumber, br);
         return br;
     }
 
-    // if want to go to specific room number, call this function
-    public BattleRoom findBattleRoom(User user, int roomNumber){
+    public boolean roomCreated(int roomNumber){
+        return battleRoomList.containsKey(roomNumber);
+    }
+
+    public BattleRoom getRoom(int roomNumber){
+        if(roomCreated(roomNumber)){
+            return battleRoomList.get(roomNumber);
+        }else return null;
+    }
+
+    // if want to go to specific room number, call this function, both create of join is ok
+    public BattleRoom findBattleRoom(String username, int roomNumber){
         if(!battleRoomList.isEmpty()) {
             if(battleRoomList.containsKey(roomNumber)){
                 BattleRoom br = battleRoomList.get(roomNumber);
                 if(br.stillValid()){
-                    br.addUser(user);
+                    br.addUser(username);
                     return br;
                 }else return null;
 
             }
-        }return startSpecificBattleRoom(user, roomNumber);
+        }return startSpecificBattleRoom(username, roomNumber);
     }
 
     // if just want to battle call this
-    public BattleRoom getABattleRoom(User user){
+    public BattleRoom getABattleRoom(String username){
         if(!battleRoomList.isEmpty()){
             for (BattleRoom br : battleRoomList.values())
                 if(br.stillValid()){
-                    br.addUser(user);
+                    br.addUser(username);
                     return br;
                 }
         }
         
-        return startBattleRoom(user);
+        return startBattleRoom(username);
         
     }
 }

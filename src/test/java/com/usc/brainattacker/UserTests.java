@@ -14,8 +14,8 @@ public class UserTests {
     }
 
     public boolean testGetStatisticFromNull(){
-        User user = new User("invalid username","12345678");
-        Result result = usercontroller.statistics(user);
+        int token = 2222;
+        Result result = usercontroller.statistics(token);
         return result.isFlag() == false;
     }
 

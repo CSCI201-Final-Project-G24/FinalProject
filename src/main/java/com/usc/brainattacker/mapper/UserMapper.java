@@ -20,6 +20,9 @@ public interface UserMapper {
 	@Select("Select COUNT(username) from user where username = #{username}")
 	int ifOccupied(String username);
 
+	@Select("Select username from user where uid = #{uid}")
+	String getUsername(int uid);
+
 	@Select("select password from user where username = #{username}")
     String getUserPassword(String username);
 

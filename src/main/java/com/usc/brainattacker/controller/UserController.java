@@ -2,6 +2,7 @@ package com.usc.brainattacker.controller;
 
 
 import com.usc.brainattacker.entity.BattleRoom;
+import com.usc.brainattacker.entity.RequestRoom;
 import com.usc.brainattacker.entity.Statistic;
 import com.usc.brainattacker.entity.User;
 import com.usc.brainattacker.service.UserService;
@@ -25,7 +26,8 @@ public class UserController {
 	public Result add(@RequestBody User user) {
 		try {
 			boolean valid = userService.add(user);
-			if(valid)return new Result(true, MessageConstant.ADD_USER_SUCCESS);
+			int token = userService.getToken(user);
+			if(valid)return new Result(true, MessageConstant.ADD_USER_SUCCESS, token);
 			else return new Result(false, MessageConstant.ADD_USER_FAIL);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -38,7 +40,8 @@ public class UserController {
 		try {
 			boolean authenticated = userService.authenticate(user.getUsername(), user.getPassword());
 			if(authenticated){
-				return new Result(true, MessageConstant.QUERY_USER_SUCCESS);
+				int token = userService.getToken(user);
+				return new Result(true, MessageConstant.QUERY_USER_SUCCESS, token);
 			}else{
 				return new Result(false, "Invalid Login");
 			}
@@ -50,9 +53,9 @@ public class UserController {
 	}
 
 	@PostMapping("/statistics")
-	public Result statistics(@RequestBody User user) {
+	public Result statistics(@RequestParam int token) {
 		try {
-			Statistic statistic = userService.statistics(user);
+			Statistic statistic = userService.statistics(token);
 			if(statistic == null) return new Result(false, "user does not exist");
 			return new Result(true, MessageConstant.QUERY_USER_SUCCESS, statistic);
 		} catch (Exception e) {
@@ -62,26 +65,41 @@ public class UserController {
 	}
 
 	@PostMapping("/findBattle")
-	public Result findBattle(@RequestBody User user, @RequestParam int roomNumber) {
+	public Result findBattle(@RequestParam String type, @RequestParam int token, @RequestParam int roomNumber) {
 		try {
-			BattleRoom br = userService.findBattle(user, roomNumber);
-			if(br == null) return new Result(false, "This room is already full");
-			return new Result(true, MessageConstant.QUERY_USER_SUCCESS, br);
+			if(type == "waiting"){
+				RequestRoom request = userService.checkRoom(token,roomNumber);
+				return new Result(true, "success", request);
+			}else if(type == "create"){
+				roomNumber = userService.createBattle(token,roomNumber);
+				if(roomNumber == -1) return new Result(false, "This room is already created or occupied");
+				else return new Result(true, MessageConstant.QUERY_USER_SUCCESS, roomNumber);
+			}else if(type == "join") {
+				if (roomNumber == -1) roomNumber = userService.findBattle(token, roomNumber);
+				else roomNumber = userService.goBattle(token);
+				if (roomNumber == -1) return new Result(false, "This room is already full");
+				return new Result(true, MessageConstant.QUERY_USER_SUCCESS, roomNumber);
+			}else{ // undefined type
+				return new Result (false, "Wrong Type");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new Result(false, MessageConstant.QUERY_USER_FAIL);
 		}
 	}
-
+	/*
 	@PostMapping("/goBattle")
 	public Result goBattle(@RequestBody User user) {
 		try {
-			BattleRoom br = userService.goBattle(user);
-			return new Result(true, MessageConstant.QUERY_USER_SUCCESS, br);
+			int roomNumber = userService.goBattle(user);
+			return new Result(true, MessageConstant.QUERY_USER_SUCCESS, roomNumber);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new Result(false, MessageConstant.QUERY_USER_FAIL);
 		}
 	}
-
+*/
 }
+// opponent name return "" or zhende, question object 
+// waiting de shihou zheyang
+// 
