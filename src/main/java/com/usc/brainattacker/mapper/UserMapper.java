@@ -5,6 +5,7 @@ import com.usc.brainattacker.entity.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 @Mapper
@@ -16,6 +17,9 @@ public interface UserMapper {
 
 	@Insert("Insert into userProfile (uid, win_number, game_number) values (0, 0)")
 	void addProfile();
+
+	@Update("UPDATE userProfile SET win_number = #{win_number}, game_number =  #{game_number} WHERE uid = #{uid}")
+	void updateProfile(int uid, int win_number, int game_number);
 
 	@Select("Select COUNT(username) from user where username = #{username}")
 	int ifOccupied(String username);

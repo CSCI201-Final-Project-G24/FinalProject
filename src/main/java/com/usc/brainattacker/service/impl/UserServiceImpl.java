@@ -49,6 +49,16 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public void updateStat(String username, boolean win) {
+		int uid = userMapper.getUserID(username);
+		int winNumber = userMapper.getUserWinNumber(uid);
+		int gameNumber = userMapper.getUserGameNumber(uid);
+		gameNumber++;
+		if(win) winNumber++;
+		userMapper.updateProfile(uid, winNumber, gameNumber);
+	}
+
+	@Override
 	public int createBattle(int token, int roomNumber) {
 		String username = userMapper.getUsername(token);
 		if(roomNumber != -1){ // specific roomnumber

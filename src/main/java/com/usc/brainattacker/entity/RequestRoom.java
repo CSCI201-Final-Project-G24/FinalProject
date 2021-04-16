@@ -1,9 +1,11 @@
 package com.usc.brainattacker.entity;
 
+import java.io.Serializable;
+
 public class RequestRoom {
-    private int roomNumber;
-    private String opponent;
-    private Question[] questions = new Question[4];
+    public int roomNumber;
+    public String opponent;
+    public Question[] questions = new Question[4];
 
     public RequestRoom(int roomNumber, String opponent){
         this.roomNumber = roomNumber;

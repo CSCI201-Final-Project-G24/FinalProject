@@ -14,4 +14,5 @@ public interface UserService {
 	int findBattle(int token, int roomNumber);
 	int goBattle(int token);
 	RequestRoom checkRoom(int token, int roomNumber);
+	void updateStat(String username, boolean win);
 }

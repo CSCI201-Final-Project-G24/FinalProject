@@ -67,14 +67,14 @@ public class UserController {
 	@PostMapping("/findBattle")
 	public Result findBattle(@RequestParam String type, @RequestParam int token, @RequestParam int roomNumber) {
 		try {
-			if(type == "waiting"){
+			if(type.equals("waiting")){
 				RequestRoom request = userService.checkRoom(token,roomNumber);
 				return new Result(true, "success", request);
-			}else if(type == "create"){
+			}else if(type.equals("create")){
 				roomNumber = userService.createBattle(token,roomNumber);
 				if(roomNumber == -1) return new Result(false, "This room is already created or occupied");
 				else return new Result(true, MessageConstant.QUERY_USER_SUCCESS, roomNumber);
-			}else if(type == "join") {
+			}else if(type.equals("join")) {
 				if (roomNumber == -1) roomNumber = userService.findBattle(token, roomNumber);
 				else roomNumber = userService.goBattle(token);
 				if (roomNumber == -1) return new Result(false, "This room is already full");
