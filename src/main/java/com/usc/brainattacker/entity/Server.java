@@ -59,8 +59,10 @@ public class Server {
                     return br;
                 }
         }
-        
+
         return startBattleRoom(username);
-        
+
     }
+
+    public BattleRoom getBattleroom(int roomNum){return battleRoomList.get(roomNum);}
 }
