@@ -1,5 +1,7 @@
 package com.usc.brainattacker.entity;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 
 public class BattleRoom extends Thread{
@@ -94,14 +96,21 @@ public class BattleRoom extends Thread{
     }
 
     public void run(){
+        Instant start = Instant.now();
         while(!gameComplete()){
-
+            //limit room exist time to 10 min
+            if(Duration.between(start, Instant.now()).toMinutes()>10)break;
         }
+        //More to do with run?
     }
 
     public String getP1Name(){ return this.p1.getName(); }
     public String getP2Name(){return this.p2.getName();}
     public boolean getP1Condition(){return this.p1.isFinished;}
     public boolean getP2Condition(){return this.p2.isFinished;}
+    public void addPointForPlayer(String username){
+        if (username == this.getP1Name())this.p1.score+=1;
+        else if(username == this.getP2Name())this.p2.score+=1;
+    }
 
 }

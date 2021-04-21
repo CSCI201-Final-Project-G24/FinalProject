@@ -40,5 +40,17 @@ public class BattleRoomController {
         }
     }
 
+    @PostMapping("/addPoints")
+    public Result addPoint(@RequestBody String username, @RequestBody int roomnum){
+        try{
+            BattleRoom br = Server.server.getBattleroom(roomnum);
+            br.addPointForPlayer(username);
+            return new Result(true, MessageConstant.ADD_ROLE_LIST_SUCCESS);
+        } catch (Exception ex){
+            ex.printStackTrace();
+            return new Result(false, MessageConstant.ADD_ROLE_LIST_FAIL);
+        }
+    }
+
 
 }
