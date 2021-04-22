@@ -2,31 +2,32 @@ package com.usc.brainattacker.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Question {
+class Q{
     private int index;
     private String question;
+    private List<Stirng> options;
     private int answer;
-    private List<String> options;
 
-    public Question(int index, String stem, int answerIndex, List<String> choices){
-        this.index = index;
-        question=stem;
-        this.options = choices;
-        this.answer = answerIndex;
+    public Q(int index, String question, String[] options, int answer;){
+        this.index=index;
+        this.question=question;
+        this.options=options;
+        this.answer=answer;
     }
-    public Question(){}
-
-    public void setIndex(int index){
-        this.index = index;
-    }
-
-    //return answer string
-    public int getAnswer(){ return answer;}
 
     public int getIndex(){return index;}
 
-    public List<String>getOptions(){return options;}
+    public Stirng getQuestion() {return question;}
 
-    public String getQuestion(){return question;}
+    public List<String> getOptions(){return options;}
+
+    public int getAnwer(return answer;)
+}
+
+public class Question {
+    private List<Q> questionList;
+
+    public void getQuestionList(){ return questionList;}
+
 
 }
