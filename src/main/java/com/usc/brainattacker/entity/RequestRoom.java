@@ -5,11 +5,12 @@ import java.io.Serializable;
 public class RequestRoom {
     public int roomNumber;
     public String opponent;
-    public Question[] questions = new Question[4];
+    public Question[] questions;
 
-    public RequestRoom(int roomNumber, String opponent){
+    public RequestRoom(int roomNumber, String opponent, Question[] questions){
         this.roomNumber = roomNumber;
         this.opponent = opponent;
+        this.questions = questions;
     }
 
     public void setQuestions(Question[] questions) {

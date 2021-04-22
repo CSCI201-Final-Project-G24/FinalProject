@@ -15,8 +15,8 @@ public interface UserMapper {
 	@Insert("Insert into user (username, password) values (#{username}, #{password})")
 	void add(User user);
 
-	@Insert("Insert into userProfile (uid, win_number, game_number) values (0, 0)")
-	void addProfile();
+	@Insert("Insert into userProfile (uid, win_number, game_number) values (#{uid}, 0, 0)")
+	void addProfile(int uid);
 
 	@Update("UPDATE userProfile SET win_number = #{win_number}, game_number =  #{game_number} WHERE uid = #{uid}")
 	void updateProfile(int uid, int win_number, int game_number);

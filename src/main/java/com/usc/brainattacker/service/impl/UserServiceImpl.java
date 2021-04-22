@@ -2,6 +2,7 @@ package com.usc.brainattacker.service.impl;
 
 import com.usc.brainattacker.entity.*;
 import com.usc.brainattacker.mapper.UserMapper;
+import com.usc.brainattacker.service.QuestionService;
 import com.usc.brainattacker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,10 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserMapper userMapper;
+
+	@Autowired
+	private QuestionService questionService;
+
 
 	@Override
 	public int getToken(User user) {
@@ -24,7 +29,7 @@ public class UserServiceImpl implements UserService {
 		if(occupied == 0){
 			userMapper.add(user);
 			int uid = userMapper.getUserID(user.getUsername());
-			userMapper.addProfile();
+			userMapper.addProfile(uid);
 			return true;
 		}else return false;
 
@@ -91,9 +96,11 @@ public class UserServiceImpl implements UserService {
 		BattleRoom br =  Server.server.getRoom(roomNumber);
 		if(br.stillValid()){// not full yet
 			return null;
-		}
+		}// if full start the thread
+		br.start();
 		String username = userMapper.getUsername(token);
 		String opponent = br.findOpponent((username));
-		return new RequestRoom(roomNumber,opponent);
+		Question[] questions = questionService.returnStruct();
+		return new RequestRoom(roomNumber,opponent, questions);
 	}
 }

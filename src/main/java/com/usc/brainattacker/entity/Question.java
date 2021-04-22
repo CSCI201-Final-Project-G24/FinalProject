@@ -3,38 +3,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
-    private String questionStem;
-    private String answer;
-    private int answerIndx;
-    private List<String> questionOption= new ArrayList<>();
+    private int index;
+    private String question;
+    private int answer;
+    private List<String> options;
 
-    public Question(String stem, String answer, String option1,String option2, String option3, String option4){
-        questionStem=stem;
-        questionOption.add(option1);
-        questionOption.add(option2);
-        questionOption.add(option3);
-        questionOption.add(option4);
+    public Question(int index, String stem, int answerIndex, List<String> choices){
+        this.index = index;
+        question=stem;
+        this.options = choices;
+        this.answer = answerIndex;
     }
     public Question(){}
 
-    //set answer for this question
-    public void setAnswer(String answer){ this.answer=answer;}
+    public void setIndex(int index){
+        this.index = index;
+    }
 
     //return answer string
-    public String getAnswer(){ return answer;}
+    public int getAnswer(){ return answer;}
 
-    //return answer index
-    public int getAnswerIndx(){return answerIndx;}
+    public int getIndex(){return index;}
 
-    //add an option to the option list
-    public void addOption(String option){  questionOption.add(option); }
+    public List<String>getOptions(){return options;}
 
-    //set question id by placing question at specific index
-    public void setAnswerID(int id){
-        answerIndx=id;
-        for(int i=questionOption.size()-1; i>id+1; i--){
-            questionOption.set(i, questionOption.get(i-1));
-        }
-        questionOption.set(id, answer);
-    }
+    public String getQuestion(){return question;}
+
 }
