@@ -1,5 +1,7 @@
 package com.usc.brainattacker.entity;
 
+import com.usc.brainattacker.service.UserService;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ public class BattleRoom extends Thread{
     private ArrayList<String> userList = new ArrayList<String>();
     private ArrayList<player> playerList = new ArrayList<player>();
     private player p1, p2;
+    private UserService userservice;
     public boolean stillValid(){
         return valid;
     }
@@ -101,7 +104,9 @@ public class BattleRoom extends Thread{
             //limit room exist time to 10 min
             if(Duration.between(start, Instant.now()).toMinutes()>10)break;
         }
-        //More to do with run?
+        userservice.updateStat(p1.getName(),p1.getScore()>=p2.getScore());
+        userservice.updateStat(p2.getName(),p2.getScore()>=p1.getScore());
+        //More to do with run
     }
 
     public String getP1Name(){ return this.p1.getName(); }
