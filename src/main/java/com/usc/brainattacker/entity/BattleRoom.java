@@ -1,6 +1,7 @@
 package com.usc.brainattacker.entity;
 
 import com.usc.brainattacker.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -8,6 +9,9 @@ import java.util.ArrayList;
 
 public class BattleRoom extends Thread{
     //Private player class takes name, and has: addScore(), getScore(), getName(), finishedGame();
+    @Autowired
+    UserService userService;
+
     private class player{
         int score;
         String name;
