@@ -31,6 +31,7 @@ public class BattleRoom extends Thread{
         }*/
         ;
     }
+
     //超时handle一下
     private int roomNumber;
     private boolean valid;
@@ -50,7 +51,8 @@ public class BattleRoom extends Thread{
 
     public BattleRoom(String username, int roomNumber){
         userList.add(username);
-        this.playerList.add(new player(username));
+        this.p1 = new player(username);
+        this.playerList.add(this.p1);
         this.roomNumber = roomNumber;
         valid = userList.size() < roomSize;
     }
@@ -70,7 +72,8 @@ public class BattleRoom extends Thread{
     public void addUser(String username){
         if(this.valid) {
             userList.add(username);
-            this.playerList.add(new player(username));
+            this.p2 = new player(username);
+            this.playerList.add(this.p2);
             valid = userList.size() < roomSize;
         }
     }
