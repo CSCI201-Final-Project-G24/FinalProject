@@ -7,8 +7,15 @@ import com.usc.brainattacker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.print.attribute.standard.RequestingUserName;
+import java.util.ArrayList;
+import java.util.Random;
+
 @Service
 public class UserServiceImpl implements UserService {
+
+
+	public ArrayList<String> visitorList = new ArrayList<String>();
 
 	@Autowired
 	private UserMapper userMapper;
@@ -45,6 +52,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Statistic statistics(int token){
+		if(token < 0) return null;
 		String username = userMapper.getUsername(token);
 		int occupied = userMapper.ifOccupied(username);
 		if(occupied == 0) return null;
@@ -55,6 +63,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void updateStat(String username, boolean win) {
+		if(visitorList.contains(username)) return;
 		int uid = userMapper.getUserID(username);
 		int winNumber = userMapper.getUserWinNumber(uid);
 		int gameNumber = userMapper.getUserGameNumber(uid);
@@ -65,7 +74,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int createBattle(int token, int roomNumber) {
-		String username = userMapper.getUsername(token);
+		String username = usernameGet(token);
 		if(roomNumber != -1){ // specific roomnumber
 			if(Server.server.roomCreated(roomNumber)) return -1;
 			BattleRoom br = Server.server.findBattleRoom(username, roomNumber);
@@ -78,7 +87,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int findBattle(int token, int roomNumber){
-		String username = userMapper.getUsername(token);
+		String username = usernameGet(token);
 		BattleRoom br = Server.server.findBattleRoom(username, roomNumber);
 		if(br == null) return -1;
 		return br.getRoomNumber();
@@ -86,7 +95,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int goBattle(int token){
-		String username = userMapper.getUsername(token);
+		String username = usernameGet(token);
 		BattleRoom br = Server.server.getABattleRoom(username);
 		return br.getRoomNumber();
 	}
@@ -97,10 +106,41 @@ public class UserServiceImpl implements UserService {
 		if(br.stillValid()){// not full yet
 			return null;
 		}// if full start the thread
-		br.start();
-		String username = userMapper.getUsername(token);
-		String opponent = br.findOpponent((username));
-		Question[] questions = questionService.returnStruct();
-		return new RequestRoom(roomNumber,opponent, questions);
+		RequestRoom packge = null;
+		String username = usernameGet(token);
+		if(!br.gameStart){ // not yet starter
+			br.start();
+			String opponent = br.findOpponent(username);
+			Question[] questions = questionService.returnStruct();
+			packge = new RequestRoom(roomNumber,opponent, questions);
+			br.packge = packge;
+		}else{ // if started
+			packge = br.packge;
+			String opponent = br.findOpponent(username);
+			packge.setOpponent(opponent);
+		}
+		return packge;
+	}
+
+	@Override
+	public Visitor addVisitor() {
+		int size = visitorList.size();
+		int token = -(size + 1);
+		Random rand = new Random();
+		int random = rand.nextInt(100000);
+		String visitor = "" + random;
+		while(visitorList.contains(visitor)){
+			random = rand.nextInt(100000);
+			visitor = "" + random;
+		}
+		visitorList.add(visitor);
+		return new Visitor(token, visitor);
+	}
+
+	@Override
+	public String usernameGet(int token) {
+		if(token < 0){//a visitor
+			return visitorList.get(-token - 1);
+		}else return userMapper.getUsername(token);
 	}
 }

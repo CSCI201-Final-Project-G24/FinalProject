@@ -37,6 +37,8 @@ public class BattleRoom extends Thread{
     }
 
     //超时handle一下
+    public RequestRoom packge;
+    public boolean gameStart;
     private int roomNumber;
     private boolean valid;
     private static int roomSize = 2;
@@ -59,6 +61,8 @@ public class BattleRoom extends Thread{
         this.playerList.add(this.p1);
         this.roomNumber = roomNumber;
         valid = userList.size() < roomSize;
+        gameStart = false;
+        packge = null;
     }
 
     public BattleRoom(String u1, String u2, int roomNumber){
@@ -69,8 +73,8 @@ public class BattleRoom extends Thread{
         this.p2 = new player(u2);
         playerList.add(this.p2);
         playerList.add(this.p1);
-
-
+        gameStart = false;
+        packge = null;
     }
 
     public void addUser(String username){
@@ -106,6 +110,7 @@ public class BattleRoom extends Thread{
     }
 
     public void run(){
+        gameStart = true;
         Instant start = Instant.now();
         while(!gameComplete()){
             //limit room exist time to 10 min

@@ -11,6 +11,8 @@ import com.usc.brainattacker.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 /**
  * 用户操作
  */
@@ -38,6 +40,9 @@ public class UserController {
 	@PostMapping("/authenticate")
 	public Result authenticate(@RequestBody User user) {
 		try {
+			if(user.getUsername().equals("") && user.getPassword().equals("")){
+				return new Result(true, "visitor login", userService.addVisitor());
+			}
 			boolean authenticated = userService.authenticate(user.getUsername(), user.getPassword());
 			if(authenticated){
 				int token = userService.getToken(user);
@@ -75,8 +80,8 @@ public class UserController {
 				if(roomNumber == -1) return new Result(false, "This room is already created or occupied");
 				else return new Result(true, MessageConstant.QUERY_USER_SUCCESS, roomNumber);
 			}else if(type.equals("join")) {
-				if (roomNumber == -1) roomNumber = userService.findBattle(token, roomNumber);
-				else roomNumber = userService.goBattle(token);
+				if (roomNumber == -1) roomNumber = userService.goBattle(token);
+				else roomNumber = userService.findBattle(token,roomNumber);
 				if (roomNumber == -1) return new Result(false, "This room is already full");
 				return new Result(true, MessageConstant.QUERY_USER_SUCCESS, roomNumber);
 			}else{ // undefined type

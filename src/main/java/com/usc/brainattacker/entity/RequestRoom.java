@@ -16,4 +16,6 @@ public class RequestRoom {
     public void setQuestions(Question[] questions) {
         this.questions = questions;
     }
+
+    public void setOpponent(String opponent) {this.opponent = opponent;}
 }

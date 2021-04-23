@@ -1,11 +1,11 @@
 package com.usc.brainattacker.service;
 
-import com.usc.brainattacker.entity.BattleRoom;
-import com.usc.brainattacker.entity.RequestRoom;
-import com.usc.brainattacker.entity.Statistic;
-import com.usc.brainattacker.entity.User;
+import com.usc.brainattacker.entity.*;
+
+import java.util.ArrayList;
 
 public interface UserService {
+	public ArrayList<String> visitorList = new ArrayList<>();
 	int getToken(User user);
 	boolean add(User user);
 	boolean authenticate(String username, String password);
@@ -15,4 +15,6 @@ public interface UserService {
 	int goBattle(int token);
 	RequestRoom checkRoom(int token, int roomNumber);
 	void updateStat(String username, boolean win);
+	Visitor addVisitor();
+	String usernameGet(int token);
 }
