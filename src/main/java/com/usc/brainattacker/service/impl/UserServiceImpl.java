@@ -90,6 +90,8 @@ public class UserServiceImpl implements UserService {
 		String username = usernameGet(token);
 		BattleRoom br = Server.server.findBattleRoom(username, roomNumber);
 		if(br == null) return -1;
+		System.out.println(br.stillValid());
+		System.out.println(br.findOpponent(username));
 		return br.getRoomNumber();
 	}
 

@@ -33,13 +33,17 @@ public class BattleRoom extends Thread{
         String getName() {
             return this.name;
         }
+
+        void finishGame(){
+            this.isFinished = true;
+        }
         /*boolean finishedGame() {
             return this.isFinished;
         }*/
         ;
     }
 
-    //超时handle一下
+
     public RequestRoom packge;
     public boolean gameStart;
     private int roomNumber;
@@ -92,7 +96,7 @@ public class BattleRoom extends Thread{
     public String findOpponent(String username){
         if(this.valid) return "false";
         else{
-            if(userList.get(0) == username) return userList.get(1);
+            if(userList.get(0).equals(username)) return userList.get(1);
             else return userList.get(0); // is whether 1 or 0
         }
     }
@@ -107,7 +111,7 @@ public class BattleRoom extends Thread{
 
     public int findOpponentScore(String username){
         int score;
-        if (username == this.p1.getName())score = this.p2.getScore();
+        if (username.equals(this.p1.getName()))score = this.p2.getScore();
         else score = this.p1.getScore();
         return score;
     }
@@ -116,6 +120,11 @@ public class BattleRoom extends Thread{
         gameStart = true;
         Instant start = Instant.now();
         while(!gameComplete()){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             //limit room exist time to 10 min
             if(Duration.between(start, Instant.now()).toMinutes()>10)break;
         }
@@ -130,8 +139,18 @@ public class BattleRoom extends Thread{
     public boolean getP1Condition(){return this.p1.isFinished;}
     public boolean getP2Condition(){return this.p2.isFinished;}
     public void addPointForPlayer(String username){
-        if (username == this.getP1Name())this.p1.score+=1;
-        else if(username == this.getP2Name())this.p2.score+=1;
+        if (username.equals(this.getP1Name()))this.p1.score+=1;
+        else if(username.equals(this.getP2Name()))this.p2.score+=1;
+    }
+    public boolean updateToFinish(String username){
+        if(username.equals(this.getP1Name())){
+            this.p1.finishGame();
+            return this.p2.isFinished;
+        } else if (username.equals(this.getP2Name())){
+            this.p2.finishGame();
+            return this.p1.isFinished;
+        }
+        return false;
     }
 
 }

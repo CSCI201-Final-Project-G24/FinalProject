@@ -21,7 +21,7 @@ public class QuestionServiceImpl implements QuestionService {
         ArrayList<Integer> randList = new ArrayList<>();
         int[] randomIndex = new int[4];
         for(int i = 0; i < upperLimit; i++){
-            randList.add(i,i);
+            randList.add(i,i+1);
         }
         Random rand = new Random();
         for(int i = 0; i < 4; i++){
