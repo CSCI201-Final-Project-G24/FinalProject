@@ -38,7 +38,7 @@ public class BattleRoomController {
             boolean condition;
             BattleRoom br = Server.server.getBattleroom(roomNumber);
             String username = userService.usernameGet(token);
-            if(username == br.getP1Name()) condition = br.getP2Condition();
+            if(username.equals(br.getP1Name())) condition = br.getP2Condition();
             else condition = br.getP1Condition();
             return new Result(true, MessageConstant.GET_PERMISSION_LIST_SUCCESS, condition);
         } catch (Exception ex){
