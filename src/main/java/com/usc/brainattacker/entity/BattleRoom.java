@@ -120,6 +120,11 @@ public class BattleRoom extends Thread{
         gameStart = true;
         Instant start = Instant.now();
         while(!gameComplete()){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             //limit room exist time to 10 min
             if(Duration.between(start, Instant.now()).toMinutes()>10)break;
         }
