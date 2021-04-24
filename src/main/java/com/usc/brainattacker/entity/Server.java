@@ -26,6 +26,10 @@ public class Server {
         return br;
     }
 
+    public void deleteBattleRoom(int roomNumber){
+        battleRoomList.remove(roomNumber);
+    }
+
     public boolean roomCreated(int roomNumber){
         return battleRoomList.containsKey(roomNumber);
     }

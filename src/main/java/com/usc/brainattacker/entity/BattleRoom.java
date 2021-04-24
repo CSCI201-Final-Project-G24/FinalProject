@@ -12,6 +12,9 @@ public class BattleRoom extends Thread{
     @Autowired
     UserService userService;
 
+    @Autowired
+    Server server;
+
     private class player{
         int score;
         String name;
@@ -118,6 +121,7 @@ public class BattleRoom extends Thread{
         }
         userservice.updateStat(p1.getName(),p1.getScore()>=p2.getScore());
         userservice.updateStat(p2.getName(),p2.getScore()>=p1.getScore());
+        server.deleteBattleRoom(roomNumber);
         //More to do with run
     }
 
