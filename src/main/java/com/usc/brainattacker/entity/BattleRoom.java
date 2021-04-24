@@ -33,13 +33,17 @@ public class BattleRoom extends Thread{
         String getName() {
             return this.name;
         }
+
+        void finishGame(){
+            this.isFinished = true;
+        }
         /*boolean finishedGame() {
             return this.isFinished;
         }*/
         ;
     }
 
-    //超时handle一下
+
     public RequestRoom packge;
     public boolean gameStart;
     private int roomNumber;
@@ -132,6 +136,16 @@ public class BattleRoom extends Thread{
     public void addPointForPlayer(String username){
         if (username == this.getP1Name())this.p1.score+=1;
         else if(username == this.getP2Name())this.p2.score+=1;
+    }
+    public boolean updateToFinish(String username){
+        if(username.equals(this.getP1Name())){
+            this.p1.finishGame();
+            return this.p2.isFinished;
+        } else if (username.equals(this.getP2Name())){
+            this.p2.finishGame();
+            return this.p1.isFinished;
+        }
+        return false;
     }
 
 }
