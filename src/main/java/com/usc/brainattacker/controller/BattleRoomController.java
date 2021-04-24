@@ -35,11 +35,12 @@ public class BattleRoomController {
     @PostMapping("/winCondition")
     public Result winCondition(@RequestBody int token, @RequestBody int roomNumber){
         try {
-            boolean condition;
+
             BattleRoom br = Server.server.getBattleroom(roomNumber);
             String username = userService.usernameGet(token);
-            if(username.equals(br.getP1Name())) condition = br.getP2Condition();
-            else condition = br.getP1Condition();
+            //if(username.equals(br.getP1Name())) condition = br.getP2Condition();
+            //else condition = br.getP1Condition();
+            boolean condition = br.updateToFinish(username);
             return new Result(true, MessageConstant.GET_PERMISSION_LIST_SUCCESS, condition);
         } catch (Exception ex){
             ex.printStackTrace();
