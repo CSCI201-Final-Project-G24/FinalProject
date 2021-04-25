@@ -42,6 +42,7 @@ public class BattleRoom extends Thread{
     }
 
     //public UserService userservice;
+    public boolean created;
     public RequestRoom packge;
     public boolean gameStart;
     private int roomNumber;
@@ -59,7 +60,7 @@ public class BattleRoom extends Thread{
         return roomNumber;
     }
 
-    public BattleRoom(String username, int roomNumber){
+    public BattleRoom(String username, int roomNumber, boolean created){
         userList.add(username);
         this.p1 = new player(username);
         this.playerList.add(this.p1);
@@ -67,6 +68,7 @@ public class BattleRoom extends Thread{
         valid = userList.size() < roomSize;
         gameStart = false;
         packge = null;
+        this.created = created;
     }
 
     public BattleRoom(String u1, String u2, int roomNumber){

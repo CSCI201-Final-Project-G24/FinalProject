@@ -82,7 +82,7 @@ public class UserController {
 			}else if(type.equals("join")) {
 				if (roomNumber == -1) roomNumber = userService.goBattle(token);
 				else roomNumber = userService.findBattle(token,roomNumber);
-				if (roomNumber == -1) return new Result(false, "This room is already full");
+				if (roomNumber == -1) return new Result(false, "This room is already full or not created");
 				return new Result(true, MessageConstant.QUERY_USER_SUCCESS, roomNumber);
 			}else{ // undefined type
 				return new Result (false, "Wrong Type");

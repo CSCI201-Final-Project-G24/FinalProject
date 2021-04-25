@@ -8,7 +8,7 @@ import com.usc.brainattacker.vo.Result;
 public class BattleRoomTests {
     BattleRoom battleRoom;
     public void testBattleRoom(String username, int roomNum){
-        battleRoom=new BattleRoom(username, roomNum);
+        battleRoom=new BattleRoom(username, roomNum, true);
     }
     /*
     public void testAddUser(){

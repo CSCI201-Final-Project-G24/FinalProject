@@ -77,10 +77,10 @@ public class UserServiceImpl implements UserService {
 		String username = usernameGet(token);
 		if(roomNumber != -1){ // specific roomnumber
 			if(Server.server.roomCreated(roomNumber)) return -1;
-			BattleRoom br = Server.server.findBattleRoom(username, roomNumber);
+			BattleRoom br = Server.server.findBattleRoom(username, roomNumber, true);
 			return br.getRoomNumber();
 		}else {
-			BattleRoom br = Server.server.startBattleRoom(username);
+			BattleRoom br = Server.server.startBattleRoom(username,true);
 			return br.getRoomNumber();
 		}
 	}
@@ -88,10 +88,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int findBattle(int token, int roomNumber){
 		String username = usernameGet(token);
-		BattleRoom br = Server.server.findBattleRoom(username, roomNumber);
+		BattleRoom br = Server.server.findBattleRoom(username, roomNumber, false);
 		if(br == null) return -1;
-		System.out.println(br.stillValid());
-		System.out.println(br.findOpponent(username));
 		return br.getRoomNumber();
 	}
 
