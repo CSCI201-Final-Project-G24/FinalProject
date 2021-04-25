@@ -1,6 +1,7 @@
 package com.usc.brainattacker.entity;
 
 import com.usc.brainattacker.service.UserService;
+import com.usc.brainattacker.util.SpringContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Duration;
@@ -10,10 +11,7 @@ import java.util.ArrayList;
 public class BattleRoom extends Thread{
     //Private player class takes name, and has: addScore(), getScore(), getName(), finishedGame();
     @Autowired
-    UserService userService;
-
-    @Autowired
-    Server server;
+    private UserService userService = SpringContextUtil.getContext().getBean(UserService.class);
 
     private class player{
         int score;
@@ -43,7 +41,7 @@ public class BattleRoom extends Thread{
         ;
     }
 
-
+    //public UserService userservice;
     public RequestRoom packge;
     public boolean gameStart;
     private int roomNumber;
@@ -53,7 +51,6 @@ public class BattleRoom extends Thread{
     private ArrayList<String> userList = new ArrayList<String>();
     private ArrayList<player> playerList = new ArrayList<player>();
     private player p1, p2;
-    private UserService userservice;
     public boolean stillValid(){
         return valid;
     }
@@ -128,9 +125,9 @@ public class BattleRoom extends Thread{
             //limit room exist time to 10 min
             if(Duration.between(start, Instant.now()).toMinutes()>10)break;
         }
-        userservice.updateStat(p1.getName(),p1.getScore()>=p2.getScore());
-        userservice.updateStat(p2.getName(),p2.getScore()>=p1.getScore());
-        server.deleteBattleRoom(roomNumber);
+        userService.updateStat(p1.getName(),p1.getScore()>=p2.getScore());
+        userService.updateStat(p2.getName(),p2.getScore()>=p1.getScore());
+        //server.deleteBattleRoom(roomNumber);
         //More to do with run
     }
 

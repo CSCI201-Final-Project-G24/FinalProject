@@ -92,6 +92,19 @@ public class UserController {
 			return new Result(false, MessageConstant.QUERY_USER_FAIL);
 		}
 	}
+
+	/*
+	@PostMapping("updataStats")
+	public Result updateStats(@RequestParam int token, @RequestParam boolean win){
+		try{
+			String username = userService.usernameGet(token);
+			userService.updateStat(username,win);
+			return new Result(true,"ok");
+		}catch(Exception e){
+			e.printStackTrace();
+			return new Result(false,"bad");
+		}
+	}*/
 	/*
 	@PostMapping("/goBattle")
 	public Result goBattle(@RequestBody User user) {
